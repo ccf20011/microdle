@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Microdle Groups</title>
+<meta name="description" content="A daily microbiology grouping puzzle. Sort 16 tiles into 4 hidden groups.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Microdle Groups">
+<meta property="og:description" content="A daily microbiology grouping puzzle. Sort 16 tiles into 4 hidden groups.">
+<meta property="og:url" content="https://microdle.org/groups/">
+<meta property="og:image" content="https://microdle.org/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap">
+<style>
+/* Same tokens as Microdle. Group colors are named after classic lab stains. */
+:root {
+  --bg: #ffffff;
+  --fg: #16181d;
+  --muted: #6a6f7a;
+  --line: #e4e6eb;
+  --soft: #eef0f3;
+  --wrong: #e0473f;
+  --right: #24985a;
+  --gram: #5b3fd1;
+  --warn: #c98a00;
+  --l1: #23874f;   /* malachite green */
+  --l2: #c4501d;   /* safranin */
+  --l3: #2862c4;   /* methylene blue */
+  --l4: #6a3fd4;   /* crystal violet */
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121317;
+    --fg: #ecedf0;
+    --muted: #9a9fab;
+    --line: #2a2d35;
+    --soft: #20232a;
+    --wrong: #f0645c;
+    --right: #3dbb76;
+    --gram: #9d88ff;
+    --warn: #e6b23a;
+    --l1: #1f7a47;
+    --l2: #b2481a;
+    --l3: #2459b3;
+    --l4: #5e37c2;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.top {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top h1 { margin: 0; text-align: center; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+.icon-btn {
+  width: 36px; height: 36px; border: 0; background: none; border-radius: 8px;
+  display: grid; place-items: center; cursor: pointer; color: var(--muted);
+}
+.icon-btn:hover { background: var(--soft); color: var(--fg); }
+.icon-btn svg { width: 22px; height: 22px; }
+
+.games { display: flex; justify-content: center; gap: 4px; padding: 10px 16px 0; }
+.games a {
+  font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none;
+  padding: 5px 12px; border-radius: 999px;
+}
+.games a:hover { color: var(--fg); background: var(--soft); }
+.games a[aria-current="page"] { color: var(--bg); background: var(--fg); }
+
+main {
+  max-width: 560px; margin: 0 auto;
+  padding-block: 16px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 16px;
+}
+.meta { margin: 0; text-align: center; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.preview-note { margin: 0; text-align: center; font-size: 13px; color: var(--warn); }
+.lede { margin: 0; text-align: center; font-size: 14px; }
+
+/* Board */
+.board { display: flex; flex-direction: column; gap: 8px; }
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tile {
+  border: 0; border-radius: 10px;
+  background: var(--soft); color: var(--fg);
+  min-height: 72px; padding: 6px 4px;
+  display: grid; place-items: center; text-align: center;
+  font-weight: 600; font-size: 14px; line-height: 1.2;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  overflow-wrap: normal; word-break: normal; hyphens: manual;
+  transition: background .12s, color .12s, transform .12s;
+}
+.tile { min-width: 0; overflow: hidden; }
+.tile span { display: block; width: 100%; min-width: 0; }
+.tile:hover { filter: brightness(0.97); }
+.tile.sel { background: var(--fg); color: var(--bg); }
+.tile:active { transform: scale(0.97); }
+.tile:disabled { cursor: default; }
+.tile:focus-visible, .btn:focus-visible, .icon-btn:focus-visible, .games a:focus-visible { outline: 2px solid var(--gram); outline-offset: 2px; }
+
+.solved {
+  border-radius: 10px; color: #fff;
+  padding: 10px 12px; text-align: center;
+}
+.solved.new { animation: pop .3s ease-out; }
+.solved.l1 { background: var(--l1); }
+.solved.l2 { background: var(--l2); }
+.solved.l3 { background: var(--l3); }
+.solved.l4 { background: var(--l4); }
+.solved b { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+.solved .its { display: block; font-size: 15px; font-weight: 500; }
+.solved .why { display: block; font-size: 13px; opacity: .92; margin-top: 4px; }
+@keyframes pop { from { transform: scale(.97); opacity: .4; } to { transform: none; opacity: 1; } }
+
+.mistakes { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin: 0; }
+.mistakes i { width: 11px; height: 11px; border-radius: 50%; background: var(--muted); display: inline-block; }
+.mistakes i.used { background: transparent; border: 1.5px solid var(--line); }
+
+.controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.btn {
+  border: 0; border-radius: 999px; padding: 10px 18px;
+  background: var(--fg); color: var(--bg);
+  font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.btn:disabled { opacity: .35; cursor: default; }
+.btn.ghost { background: none; color: var(--fg); border: 1px solid var(--line); }
+.shake { animation: shake .3s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+.hint { font-size: 13px; color: var(--muted); }
+.result { margin: 0; text-align: center; font-size: 20px; font-weight: 800; }
+.end { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.share-preview { white-space: pre; font: 15px/1.35 var(--font); background: var(--soft); border-radius: 10px; padding: 12px 16px; margin: 0; }
+.countdown { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0; }
+.fallback { width: 100%; height: 130px; font: 14px var(--font); padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
+
+footer {
+  text-align: center; color: var(--muted); font-size: 12px; padding-block: 0 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+dialog {
+  border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--fg);
+  width: min(440px, calc(100vw - 32px)); padding: 22px;
+}
+dialog::backdrop { background: rgba(0,0,0,.35); }
+dialog h2 { margin: 0 0 12px; font-size: 20px; font-weight: 800; }
+dialog p, dialog ul { margin: 0 0 10px; }
+dialog ul { padding-left: 18px; }
+.dlg-close { position: absolute; top: 12px; right: 12px; }
+.legend { list-style: none; padding: 0 !important; display: grid; gap: 6px; }
+.legend li { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.legend i { width: 16px; height: 16px; border-radius: 4px; flex: none; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+.stats-grid b { display: block; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stats-grid span { font-size: 11px; color: var(--muted); }
+
+.toast {
+  position: fixed; left: 50%; top: calc(70px + env(safe-area-inset-top, 0px));
+  transform: translateX(-50%);
+  background: var(--fg); color: var(--bg);
+  padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 20;
+}
+@media (prefers-reduced-motion: reduce) { .solved.new, .shake { animation: none; } .tile { transition: none; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="icon-btn" id="helpBtn" aria-label="How to play">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+  </button>
+  <h1>Microdle</h1>
+  <button class="icon-btn" id="statsBtn" aria-label="Statistics">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M12 20V4M19 20v-6"/></svg>
+  </button>
+</header>
+<nav class="games" aria-label="Games">
+  <a href="../">Case</a>
+  <a href="./" aria-current="page">Groups</a>
+</nav>
+
+<main>
+  <p class="meta" id="meta"></p>
+  <p class="preview-note" id="previewNote" hidden></p>
+  <p class="lede">Make four groups of four.</p>
+
+  <section class="board" id="board" aria-live="polite">
+    <div id="solvedRows" class="board"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <p class="mistakes" id="mistakes"></p>
+
+  <div class="controls" id="controls">
+    <button class="btn ghost" id="shuffleBtn">Shuffle</button>
+    <button class="btn ghost" id="clearBtn" disabled>Deselect all</button>
+    <button class="btn" id="submitBtn" disabled>Submit</button>
+  </div>
+
+  <section class="end" id="end" hidden>
+    <p class="result" id="result"></p>
+    <pre class="share-preview" id="sharePreview"></pre>
+    <button class="btn" id="shareBtn">Share result</button>
+    <textarea class="fallback" id="shareFallback" hidden readonly aria-label="Result text to copy"></textarea>
+    <p class="countdown" id="countdown"></p>
+  </section>
+</main>
+
+<footer>For education only. Not medical advice.</footer>
+
+<dialog id="helpDlg" aria-labelledby="helpTitle">
+  <button class="icon-btn dlg-close" data-close aria-label="Close">✕</button>
+  <h2 id="helpTitle">How to play</h2>
+  <p>Sort the 16 tiles into 4 groups of 4 that share something: an organism trait, a drug class, a vector, a lab finding, even a name.</p>
+  <ul>
+    <li>Tap 4 tiles, then Submit.</li>
+    <li>You can make 4 mistakes. "One away" means 3 of your 4 belong together.</li>
+    <li>Some tiles look like they fit more than one group. Only one answer uses every tile.</li>
+  </ul>
+  <p><b>Groups get harder, named for lab stains</b></p>
+  <ul class="legend">
+    <li><i style="background:var(--l1)"></i> Malachite: most straightforward</li>
+    <li><i style="background:var(--l2)"></i> Safranin</li>
+    <li><i style="background:var(--l3)"></i> Methylene blue</li>
+    <li><i style="background:var(--l4)"></i> Crystal violet: trickiest</li>
+  </ul>
+  <p class="hint">A new puzzle every day at midnight.</p>
+</dialog>
+
+<dialog id="statsDlg" aria-labelledby="statsTitle">
+  <button class="icon-btn dlg-close" data-close aria-label="Close">✕</button>
+  <h2 id="statsTitle">Statistics</h2>
+  <div class="stats-grid" id="statsGrid"></div>
+</dialog>
+
+<script src="../data/groups.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

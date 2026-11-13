@@ -87,6 +87,15 @@ button { font: inherit; color: inherit; }
 .icon-btn:hover { background: var(--soft); color: var(--fg); }
 .icon-btn svg { width: 22px; height: 22px; }
 
+.games { display: flex; justify-content: center; gap: 4px; padding: 10px 16px 0; }
+.games a {
+  font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none;
+  padding: 5px 12px; border-radius: 999px;
+}
+.games a:hover { color: var(--fg); background: var(--soft); }
+.games a[aria-current="page"] { color: var(--bg); background: var(--fg); }
+.games a:focus-visible { outline: 2px solid var(--gram); outline-offset: 2px; }
+
 main {
   max-width: 560px;
   margin: 0 auto;
@@ -275,6 +284,10 @@ dialog ul { padding-left: 18px; }
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M12 20V4M19 20v-6"/></svg>
   </button>
 </header>
+<nav class="games" aria-label="Games">
+  <a href="./" aria-current="page">Case</a>
+  <a href="groups/">Groups</a>
+</nav>
 
 <main>
   <p class="meta" id="meta"></p>

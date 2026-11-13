@@ -13,6 +13,9 @@ A daily infectious disease case. Name the organism in 6 guesses, then treat the 
 | `data/organisms.js` | Everything players can guess, with nicknames for search |
 | `data/drugs.js` | Everything players can pick in the treatment round |
 | `tools/check.js` | Checks every case for errors and reports how many days are left |
+| `groups/` | The Groups tab: a daily puzzle where players sort 16 tiles into 4 groups of 4 |
+| `data/groups.js` | The Groups puzzles, one per day |
+| `tools/check-groups.js` | Checks every Groups puzzle and reports how many days are left |
 | `CASE_GUIDE.md` | Rules for writing new cases, followed by the daily AI case writer |
 | `favicon.svg`, `apple-touch-icon.png`, `og.png` | Browser tab icon, home-screen icon, link preview image |
 
@@ -31,6 +34,18 @@ node tools/check.js
 ```
 
 To play any case without affecting stats, add `?day=N` to the address, for example `.../microdle/?day=7`.
+
+## The Groups tab
+
+`microdle.org/groups/` has a second daily game: sort 16 tiles into 4 groups of 4 (an organism trait, a drug class, a vector, a lab finding, a name). Players get 4 mistakes. Each solved group shows a one-line teaching point.
+
+Puzzles live in `data/groups.js`, easiest group first. Every tile must fit only its own group, or the puzzle has two answers. `groups/app.js` has its own `EPOCH` (Groups #1 was November 13, 2026). Check puzzles with:
+
+```bash
+node tools/check-groups.js
+```
+
+Add `?day=N` to preview any puzzle without affecting stats.
 
 ## Visitor counting (optional)
 
