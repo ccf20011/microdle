@@ -65,12 +65,12 @@ const CASES = [
     accept: ['giardia'],
     dx: 'Giardiasis',
     clues: [
-      ['Presentation', 'A 28-year-old woman has had 2 weeks of watery diarrhea, bloating, and a lot of gas.'],
-      ['History', 'She got back from a backpacking trip in the Rockies 3 weeks ago. She drank from mountain streams without a filter.'],
-      ['Exam', 'Afebrile. Mild diffuse abdominal tenderness. She has lost 4 kg.'],
-      ['Stool', 'Greasy, foul-smelling stools that float. No blood. Fecal leukocytes are negative.'],
-      ['Course', 'Her symptoms get worse after dairy, which never bothered her before.'],
-      ['Microbiology', 'Stool shows pear-shaped flagellated trophozoites with two nuclei that look like a face. Stool antigen positive.'],
+      ["Presentation", "A 28-year-old woman has had 2 weeks of watery diarrhea, bloating, and a lot of gas."],
+      ["History", "She started metformin for prediabetes a month ago. Her roommate got food poisoning after a sushi dinner they shared 3 weeks ago."],
+      ["Exam", "Afebrile. Mild diffuse abdominal tenderness. She has lost 4 kg."],
+      ["Stool", "Greasy, foul-smelling stools that float. No blood. Fecal leukocytes negative. Stopping metformin for a week did not help."],
+      ["More history", "A week before the sushi dinner she went backpacking in the Rockies and drank from streams without a filter. Dairy now makes everything worse."],
+      ["Microbiology", "Stool shows pear-shaped flagellated trophozoites with two nuclei that look like a face. Stool antigen positive."],
     ],
     rx: {
       prompt: 'She is well enough to go home. What do you prescribe?',
