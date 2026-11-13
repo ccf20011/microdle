@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Microdle</title>
+<meta name="description" content="A daily infectious disease case. Name the organism in 6 guesses, then treat the patient.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<!-- Link previews in group chats and social media. Update the URLs if you move to your own domain. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Microdle">
+<meta property="og:description" content="A daily infectious disease case. Name the organism in 6 guesses, then treat the patient.">
+<meta property="og:url" content="https://ccf20011.github.io/microdle/">
+<meta property="og:image" content="https://ccf20011.github.io/microdle/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Visitor counting: paste your GoatCounter snippet here (see README). -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap">
+<style>
+/* Layout: one narrow centered column, like a lab requisition slip. Everything stacks. */
+:root {
+  --bg: #ffffff;
+  --fg: #16181d;
+  --muted: #6a6f7a;
+  --line: #e4e6eb;
+  --soft: #f4f5f7;
+  --wrong: #e0473f;
+  --right: #24985a;
+  --gram: #5b3fd1;        /* Gram-positive purple, used sparingly */
+  --warn: #c98a00;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121317;
+    --fg: #ecedf0;
+    --muted: #9a9fab;
+    --line: #2a2d35;
+    --soft: #1b1d23;
+    --wrong: #f0645c;
+    --right: #3dbb76;
+    --gram: #9d88ff;
+    --warn: #e6b23a;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.top {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.icon-btn {
+  width: 36px; height: 36px;
+  border: 0; background: none; border-radius: 8px;
+  display: grid; place-items: center;
+  cursor: pointer; color: var(--muted);
+}
+.icon-btn:hover { background: var(--soft); color: var(--fg); }
+.icon-btn svg { width: 22px; height: 22px; }
+
+main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.meta {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.preview-note {
+  margin: 0; text-align: center; font-size: 13px;
+  color: var(--warn);
+}
+
+/* Clues */
+.clues { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.clue {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.clue .label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.clue.new { animation: rise .35s ease-out; }
+.clue.locked {
+  border-style: dashed;
+  color: var(--muted);
+  font-size: 13px;
+  padding-block: 8px;
+}
+@keyframes rise { from { opacity: .3; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* Inputs */
+.row { display: flex; gap: 8px; }
+.combo { position: relative; flex: 1; min-width: 0; }
+.combo input {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--fg);
+  outline: none;
+}
+.combo input:focus { border-color: var(--fg); }
+.combo ul {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px);
+  z-index: 5;
+  list-style: none; margin: 0; padding: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  max-height: 280px; overflow-y: auto;
+}
+.combo li {
+  padding: 8px 10px; border-radius: 6px; cursor: pointer;
+  display: flex; justify-content: space-between; gap: 12px;
+}
+.combo li small { color: var(--muted); white-space: nowrap; }
+.combo li.active { background: var(--soft); }
+.btn {
+  border: 0; border-radius: 10px;
+  padding: 11px 18px;
+  background: var(--fg); color: var(--bg);
+  font-weight: 600; cursor: pointer;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: .35; cursor: default; }
+.btn.ghost { background: none; color: var(--fg); border: 1px solid var(--line); }
+.btn:focus-visible, .icon-btn:focus-visible, .chip button:focus-visible { outline: 2px solid var(--gram); outline-offset: 2px; }
+.msg { margin: 6px 0 0; min-height: 1.2em; font-size: 13px; color: var(--wrong); }
+.shake { animation: shake .3s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.left { margin: 0; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* Guess history */
+.history { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.history li { display: flex; align-items: center; gap: 10px; }
+.sq {
+  width: 22px; height: 22px; border-radius: 5px; flex: none;
+  display: grid; place-items: center; font-size: 13px; color: #fff;
+}
+.sq.wrong { background: var(--wrong); }
+.sq.right { background: var(--right); }
+.history .wrongname { color: var(--muted); text-decoration: line-through; }
+
+/* Answer + treatment */
+.card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.card h2 { margin: 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.answer-name { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; font-style: italic; }
+.answer-dx { margin: 0; color: var(--muted); }
+.card p { margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips:empty { display: none; }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--soft); border-radius: 999px;
+  padding: 4px 6px 4px 12px; font-size: 14px;
+}
+.chip button { border: 0; background: none; cursor: pointer; color: var(--muted); padding: 0 4px; font-size: 16px; line-height: 1; border-radius: 999px; }
+.hint { font-size: 13px; color: var(--muted); }
+.grade { font-size: 20px; font-weight: 800; margin: 0; }
+.grade.best { color: var(--right); }
+.grade.okay { color: var(--warn); }
+.grade.poor { color: var(--warn); }
+.grade.bad { color: var(--wrong); }
+.kv { font-size: 14px; }
+.kv b { font-weight: 600; }
+.pearl { font-size: 14px; background: var(--soft); border-radius: 8px; padding: 10px 12px; }
+
+.end { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.share-preview {
+  white-space: pre; font: 15px/1.4 var(--font);
+  background: var(--soft); border-radius: 10px; padding: 12px 16px; margin: 0;
+}
+.countdown { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0; }
+.fallback { width: 100%; height: 110px; font: 14px var(--font); padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
+
+footer {
+  text-align: center; color: var(--muted); font-size: 12px;
+  padding-block: 0 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Dialogs */
+dialog {
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--bg); color: var(--fg);
+  width: min(440px, calc(100vw - 32px));
+  padding: 22px;
+}
+dialog::backdrop { background: rgba(0,0,0,.35); }
+dialog h2 { margin: 0 0 12px; font-size: 20px; font-weight: 800; }
+dialog p, dialog ul { margin: 0 0 10px; }
+dialog ul { padding-left: 18px; }
+.dlg-close { position: absolute; top: 12px; right: 12px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; margin-bottom: 16px; }
+.stats-grid b { display: block; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stats-grid span { font-size: 11px; color: var(--muted); }
+.dist { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.dist div { display: flex; align-items: center; gap: 8px; }
+.dist i { display: block; height: 18px; background: var(--muted); border-radius: 3px; min-width: 18px; color: var(--bg); font-style: normal; font-size: 12px; text-align: right; padding-right: 5px; line-height: 18px; }
+.dist i.today { background: var(--right); }
+
+.toast {
+  position: fixed; left: 50%; top: calc(70px + env(safe-area-inset-top, 0px));
+  transform: translateX(-50%);
+  background: var(--fg); color: var(--bg);
+  padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  z-index: 20;
+}
+@media (prefers-reduced-motion: reduce) { .clue.new, .shake { animation: none; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="icon-btn" id="helpBtn" aria-label="How to play">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+  </button>
+  <h1>Microdle</h1>
+  <button class="icon-btn" id="statsBtn" aria-label="Statistics">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M12 20V4M19 20v-6"/></svg>
+  </button>
+</header>
+
+<main>
+  <p class="meta" id="meta"></p>
+  <p class="preview-note" id="previewNote" hidden></p>
+
+  <ol class="clues" id="clues" aria-live="polite"></ol>
+
+  <section id="guessArea">
+    <div class="row">
+      <div class="combo">
+        <input id="guessInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+               placeholder="Name the organism…" role="combobox" aria-autocomplete="list"
+               aria-expanded="false" aria-controls="guessList" aria-label="Organism guess">
+        <ul id="guessList" role="listbox" hidden></ul>
+      </div>
+      <button class="btn" id="guessBtn">Guess</button>
+    </div>
+    <p class="msg" id="guessMsg" role="status"></p>
+    <p class="left" id="guessesLeft"></p>
+  </section>
+
+  <ul class="history" id="history"></ul>
+
+  <section class="card" id="answerCard" hidden>
+    <h2 id="answerHead">The organism</h2>
+    <p class="answer-name" id="answerName"></p>
+    <p class="answer-dx" id="answerDx"></p>
+  </section>
+
+  <section class="card" id="rxCard" hidden>
+    <h2>Now treat the patient</h2>
+    <p id="rxPrompt"></p>
+    <div class="chips" id="rxChips"></div>
+    <div class="row">
+      <div class="combo">
+        <input id="rxInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+               placeholder="Add a drug or intervention…" role="combobox" aria-autocomplete="list"
+               aria-expanded="false" aria-controls="rxList" aria-label="Add treatment">
+        <ul id="rxList" role="listbox" hidden></ul>
+      </div>
+    </div>
+    <p class="hint">Add everything you'd order. You get one try.</p>
+    <p class="msg" id="rxMsg" role="status"></p>
+    <button class="btn" id="rxBtn" disabled>Give treatment</button>
+  </section>
+
+  <section class="card" id="rxResult" hidden>
+    <h2>Outcome</h2>
+    <p class="grade" id="rxGrade"></p>
+    <p class="kv" id="rxGiven"></p>
+    <p id="rxOutcome"></p>
+    <p class="kv" id="rxStandard"></p>
+  </section>
+
+  <p class="pearl" id="pearl" hidden></p>
+
+  <section class="end" id="end" hidden>
+    <pre class="share-preview" id="sharePreview"></pre>
+    <button class="btn" id="shareBtn">Share result</button>
+    <textarea class="fallback" id="shareFallback" hidden readonly aria-label="Result text to copy"></textarea>
+    <p class="countdown" id="countdown"></p>
+  </section>
+</main>
+
+<footer>For education only. Not medical advice.</footer>
+
+<dialog id="helpDlg" aria-labelledby="helpTitle">
+  <button class="icon-btn dlg-close" data-close aria-label="Close">✕</button>
+  <h2 id="helpTitle">How to play</h2>
+  <p>Name the organism behind today's case in 6 guesses.</p>
+  <ul>
+    <li>You start with one clue. Each wrong guess reveals another.</li>
+    <li>Once you get it, treat the patient. Add every drug or intervention you'd order, then submit. You get one try.</li>
+    <li>Your treatment is graded and you see how the patient does.</li>
+  </ul>
+  <p><b>Your result</b><br>🟥 wrong guess · 🦠 the guess that got it · ⬜️ unused</p>
+  <p><b>Treatment</b></p>
+  <ul>
+    <li>✅ <b>Ideal</b>: the first-line choice</li>
+    <li>🟡 <b>Acceptable</b>: it works, but it isn't the best choice</li>
+    <li>⚠️ <b>Inadequate</b>: it doesn't treat the infection</li>
+    <li>❌ <b>Harmful</b>: it makes the patient worse</li>
+  </ul>
+  <p class="hint">A new case every day at midnight.</p>
+</dialog>
+
+<dialog id="statsDlg" aria-labelledby="statsTitle">
+  <button class="icon-btn dlg-close" data-close aria-label="Close">✕</button>
+  <h2 id="statsTitle">Statistics</h2>
+  <div class="stats-grid" id="statsGrid"></div>
+  <p class="hint">Guess distribution</p>
+  <div class="dist" id="dist"></div>
+</dialog>
+
+<script src="data/organisms.js"></script>
+<script src="data/drugs.js"></script>
+<script src="data/cases.js"></script>
+<script src="grade.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
