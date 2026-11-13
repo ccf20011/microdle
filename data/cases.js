@@ -1038,4 +1038,118 @@ const CASES = [
     },
     pearl: 'CMV retinitis happens with CD4 under 50. Ganciclovir is activated by a CMV kinase (UL97), and its main side effect is bone marrow suppression.',
   },
+
+  // 31
+  {
+    accept: ['babesia'],
+    dx: 'Babesiosis in an asplenic patient',
+    clues: [
+      ['Presentation', 'A 68-year-old man has had 1 week of fever, sweats, fatigue, and dark urine.'],
+      ['History', 'It is July. He lives on Cape Cod and spends his days gardening. His spleen was removed after a car accident 10 years ago.'],
+      ['Exam', 'T 39.1 °C. Mild jaundice. No rash. He does not remember a tick bite.'],
+      ['Labs', 'Hemoglobin 10.8, platelets 85,000. LDH high, haptoglobin undetectable, indirect bilirubin elevated. Mildly elevated liver enzymes.'],
+      ['Travel', 'He has not left the United States in over 20 years.'],
+      ['Microbiology', 'Thin blood smear shows small ring forms inside red cells, some arranged in a tetrad like a Maltese cross. No pigment and no gametocytes. Parasitemia is 4%.'],
+    ],
+    rx: {
+      prompt: 'He is admitted to the medical floor and is stable. Parasitemia is 4%. What do you start?',
+      best: [['atovaquone', 'azithromycin']],
+      okay: [['clindamycin', 'quinine']],
+      extras: ['doxycycline'],
+      notes: {
+        atovaquone: 'Atovaquone is right, but alone it lets resistance develop. Pair it with azithromycin.',
+        azithromycin: 'Azithromycin is right, but alone it lets resistance develop. Pair it with atovaquone.',
+        clindamycin: 'Clindamycin works only when paired with quinine, and that combination is a backup because of its side effects.',
+        quinine: 'Clindamycin plus quinine works but causes more side effects (ringing in the ears, GI upset). Atovaquone plus azithromycin is preferred.',
+        'atovaquone-proguanil': 'This is a malaria pill. Babesiosis is treated with atovaquone suspension plus azithromycin.',
+        doxycycline: 'Doxycycline covers Lyme disease and anaplasmosis, which can come from the same tick bite, but it does nothing for this parasite.',
+        chloroquine: 'Malaria drugs do not reliably treat this parasite.',
+        artesunate: 'Artesunate is for severe malaria. It is not a recommended treatment here.',
+        primaquine: 'Primaquine treats the liver stage of vivax and ovale malaria. It does nothing here.',
+      },
+      outcome: {
+        best: 'His fever broke in 3 days and his parasitemia fell steadily. Because he has no spleen, treatment continued until his smears stayed negative.',
+        okay: 'He recovered, but quinine caused ringing in his ears and nausea.',
+        poor: 'His parasitemia climbed past 10% and he needed an exchange transfusion in the ICU.',
+      },
+      standard: 'Atovaquone plus azithromycin, with follow-up blood smears. Treat longer in asplenic or immunocompromised patients. Consider exchange transfusion for parasitemia over 10% or organ failure. Test for Lyme disease and anaplasmosis.',
+    },
+    pearl: 'The Maltese cross is classic for Babesia. Ring forms without pigment or gametocytes in someone who has not traveled point to Babesia, not malaria. Having no spleen makes it far more severe.',
+  },
+
+  // 32
+  {
+    accept: ['pertussis'],
+    dx: 'Infant pertussis',
+    clues: [
+      ['Presentation', 'A 6-week-old girl is brought to the ED after she turned blue during a coughing spell.'],
+      ['History', 'She had a runny nose for a week before the cough started. Her 15-year-old brother has had a cough for a month that makes him vomit. Her mother skipped her vaccines during pregnancy.'],
+      ['Exam', 'Afebrile. Between spells she looks well and her lungs are clear. During a spell she coughs in rapid bursts, turns red and then blue, stops breathing for 15 seconds, and vomits afterward.'],
+      ['Labs', 'WBC 34,000 with 78% lymphocytes. Platelets 620,000.'],
+      ['Imaging', 'Chest X-ray shows mild perihilar infiltrates that blur the edge of the heart.'],
+      ['Microbiology', 'Nasopharyngeal PCR is positive for a small Gram-negative coccobacillus that grows on Regan-Lowe or Bordet-Gengou agar.'],
+    ],
+    rx: {
+      prompt: 'She is admitted to watch for apnea. She has no allergies. What do you start?',
+      best: [['azithromycin']],
+      okay: [[['erythromycin', 'clarithromycin']]],
+      harm: {
+        'tmp-smx': 'TMP-SMX is contraindicated under 2 months of age. Sulfonamides push bilirubin off albumin and can cause kernicterus.',
+      },
+      notes: {
+        erythromycin: 'Erythromycin works, but it needs 14 days, upsets the stomach, and raises the risk of pyloric stenosis in young infants. Azithromycin is preferred.',
+        clarithromycin: 'Clarithromycin works, but azithromycin is preferred in young infants.',
+        supportive: 'Every infant under 1 year with pertussis should get an antibiotic. It clears the bacteria and protects others, even if the cough lingers.',
+        amoxicillin: 'Beta-lactams do not work against this organism.',
+        'amox-clav': 'Beta-lactams do not work against this organism.',
+        ceftriaxone: 'Cephalosporins do not reliably treat this organism.',
+      },
+      outcome: {
+        best: 'She had a few more spells in the hospital but no more apnea. She went home after a week, and her family got prophylaxis.',
+        okay: 'She recovered, though her antibiotic was not the preferred one for her age.',
+        poor: 'She kept having apneic spells and needed the ICU.',
+      },
+      standard: 'Azithromycin for 5 days. Most infants under 4 months are admitted. Give prophylaxis to all household contacts, and vaccinate mothers with Tdap during every pregnancy.',
+    },
+    pearl: 'Young infants with pertussis often do not whoop. They have apnea and cyanosis instead. A very high lymphocyte count is a clue, and the toxin causes it.',
+  },
+
+  // 33
+  {
+    accept: ['blasto'],
+    dx: 'Pulmonary and skin blastomycosis',
+    clues: [
+      ['Presentation', 'A 38-year-old man has 6 weeks of cough, low fevers, night sweats, and weight loss.'],
+      ['History', 'He lives in northern Wisconsin. Last fall he spent weeks tearing out beaver dams along a river.'],
+      ['Exam', 'A crusted, wart-like plaque with a raised edge on his cheek. No lymph node swelling.'],
+      ['Labs', 'HIV negative. Normal WBC. Sputum smears for acid-fast bacilli are negative 3 times.'],
+      ['Imaging', 'Chest X-ray shows a mass-like consolidation in the right upper lobe. It was first read as possible lung cancer.'],
+      ['Microbiology', 'Biopsy of the skin lesion shows large yeast with thick double walls and a single broad-based bud. It grows as a mold at room temperature.'],
+    ],
+    rx: {
+      prompt: 'He is not hypoxic and has no neurologic symptoms. He will be treated as an outpatient. What do you prescribe?',
+      best: [['itraconazole']],
+      okay: [[['ampho', 'fluconazole', 'voriconazole', 'posaconazole', 'isavuconazole']]],
+      notes: {
+        ampho: 'Amphotericin works, but it is saved for severe disease or brain involvement. Mild to moderate disease gets oral itraconazole.',
+        fluconazole: 'Fluconazole is less effective. It is a backup if itraconazole cannot be used.',
+        voriconazole: 'Voriconazole has activity, but itraconazole is the drug of choice.',
+        posaconazole: 'Posaconazole has activity, but itraconazole is the drug of choice.',
+        isavuconazole: 'Isavuconazole has activity, but itraconazole is the drug of choice.',
+        micafungin: 'Echinocandins do not work against the dimorphic fungi.',
+        caspofungin: 'Echinocandins do not work against the dimorphic fungi.',
+        anidulafungin: 'Echinocandins do not work against the dimorphic fungi.',
+        supportive: 'His infection has spread to his skin. All disseminated disease needs treatment.',
+        isoniazid: 'This is not TB. His smears were negative and the biopsy shows yeast.',
+        rifampin: 'This is not TB, and rifampin lowers itraconazole levels.',
+      },
+      outcome: {
+        best: 'His cough and skin lesion faded over 2 months. He finished a year of itraconazole with levels checked along the way.',
+        okay: 'He improved, but this was not the preferred drug.',
+        poor: 'His lung lesion grew and new skin lesions appeared.',
+      },
+      standard: 'Itraconazole for 6 to 12 months for mild to moderate disease, with a blood level checked after 2 weeks. Amphotericin first for severe or CNS disease.',
+    },
+    pearl: 'Blastomyces is a big yeast with a broad-based bud. It spreads to skin and bone and is common around the Great Lakes and the Ohio and Mississippi river valleys.',
+  },
 ];

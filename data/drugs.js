@@ -76,6 +76,7 @@ const DRUGS = [
   { id: 'atovaquone-proguanil', name: 'Atovaquone-proguanil', aka: ['Malarone'], am: true },
   { id: 'chloroquine', name: 'Chloroquine', aka: [], am: true },
   { id: 'primaquine', name: 'Primaquine', aka: [], am: true },
+  { id: 'quinine', name: 'Quinine (oral)', aka: ['Qualaquin', 'Quinine sulfate'], am: true },
   { id: 'pyrimethamine', name: 'Pyrimethamine', aka: ['Daraprim'], am: true },
   { id: 'sulfadiazine', name: 'Sulfadiazine', aka: [], am: true },
   { id: 'atovaquone', name: 'Atovaquone', aka: ['Mepron'], am: true },
