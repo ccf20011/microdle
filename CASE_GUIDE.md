@@ -21,13 +21,17 @@ Keep at least **30 days of unplayed cases** in `data/cases.js`. Run `node tools/
 
 Copy an existing case block and follow the field guide at the top of `data/cases.js`. Look at earlier cases for the right tone.
 
+**Difficulty target:** a player who passed Step 2 should usually get the organism on **clue 3 or 4**, not before. If you could name the answer confidently from clues 1 and 2 alone, the case is too easy. Rewrite it.
+
 **Clues** (exactly 6, from vague to giveaway):
-1. Presentation: age, sex, chief complaint. Should fit several organisms.
-2. History or exposure
-3. Exam
-4. Labs, or a more specific exposure
-5. Imaging, CSF, or another test
-6. Microbiology: stain, culture, or the classic lab finding. Basically gives it away.
+1. **Presentation:** age, sex, chief complaint. Must fit at least 4 organisms.
+2. **Background:** risk factors that widen the list, like immune status, comorbidities, job, or a generic exposure. Include one **fair red herring**: a real detail that points toward a different organism, such as a cat at home in a case that isn't Bartonella, a sick contact with a different illness, a recent trip that doesn't matter, or a new medication that could cause similar symptoms. A red herring must never contradict the real answer.
+3. **Exam:** narrows it to a few organisms.
+4. **Labs**, or a more specific test that rules out the red herring.
+5. **The signature exposure or classic finding** goes here or later, never earlier: things like "drank from a mountain stream," "ate raw oysters," "tick bite," "deli meat," or "pigeon droppings."
+6. **Microbiology:** stain, culture, or the classic lab finding. Basically gives it away.
+
+Look at cases 3 onward in `data/cases.js` for examples of this pacing.
 
 Never name the organism, its disease, or a nickname in the clues. The checker catches the obvious ones, but also avoid indirect giveaways like naming the vaccine for that exact organism.
 
