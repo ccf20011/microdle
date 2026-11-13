@@ -427,10 +427,6 @@
     $('#previewNote').textContent = 'Preview of case ' + puzzleNo + ' of ' + CASES.length + '.';
   }
   render();
-  if (!preview && !store.get('microdle-seen-help', false) && S.guesses.length === 0) {
-    store.set('microdle-seen-help', true);
-    openDlg($('#helpDlg'));
-  }
 
   // exposed for testing in the console
   window.__microdle = { gradeRx, C };
