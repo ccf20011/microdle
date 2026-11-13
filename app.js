@@ -24,6 +24,11 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage blocked */ } },
   };
   const listNames = (ids) => ids.map((id) => DRUG[id].name).join(', ');
+  // A regimen is a list of slots; each slot is one drug id or an array of interchangeable ids.
+  const regimenText = (reg) => reg.map((slot) => {
+    const opts = (Array.isArray(slot) ? slot : [slot]).map((id) => DRUG[id].name);
+    return opts.length > 1 && reg.length > 1 ? '(' + opts.join(' or ') + ')' : opts.join(' or ');
+  }).join(' + ');
 
   // ---- Which case is today --------------------------------------------------
   const params = new URLSearchParams(location.search);
@@ -313,6 +318,22 @@
         $('#rxGiven').hidden = true;
         $('#rxOutcome').hidden = true;
       }
+      // On a miss, show what would have graded ideal (and acceptable, unless they already got that).
+      const missed = !!S.rx && S.rx.grade !== 'best';
+      const showKey = (sel, label, regs) => {
+        const el = $(sel);
+        el.innerHTML = '';
+        el.hidden = !regs || !regs.length;
+        if (el.hidden) return;
+        const b = document.createElement('b'); b.textContent = label;
+        el.append(b);
+        regs.forEach((r, i) => {
+          if (regs.length > 1) el.append(document.createElement('br'), '• ');
+          el.append(regimenText(r));
+        });
+      };
+      showKey('#rxIdeal', 'Ideal: ', missed ? C.rx.best : null);
+      showKey('#rxOkay', 'Acceptable: ', missed && S.rx.grade !== 'okay' ? C.rx.okay : null);
       $('#rxStandard').innerHTML = '';
       const b2 = document.createElement('b'); b2.textContent = 'Standard of care: ';
       $('#rxStandard').append(b2, C.rx.standard);
