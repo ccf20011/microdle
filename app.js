@@ -42,7 +42,9 @@
   const SKEY = 'microdle-state';
   const STATS_KEY = 'microdle-stats';
   let S = preview ? null : store.get(SKEY, null);
-  if (!S || S.day !== dayIdx) S = { day: dayIdx, guesses: [], status: 'playing', rx: null };
+  // If a day's case was swapped after someone played it, start them fresh on the new case.
+  const caseKey = C.accept.join(',') + '|' + C.dx;
+  if (!S || S.day !== dayIdx || S.caseKey !== caseKey) S = { day: dayIdx, caseKey, guesses: [], status: 'playing', rx: null };
   const save = () => { if (!preview) store.set(SKEY, S); };
   let rxSel = [];
   let lastRevealed = -1;
