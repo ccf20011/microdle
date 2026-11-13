@@ -23,15 +23,15 @@ Copy an existing case block and follow the field guide at the top of `data/cases
 
 **Difficulty target:** a player who passed Step 2 should usually get the organism on **clue 3 or 4**, not before. If you could name the answer confidently from clues 1 and 2 alone, the case is too easy. Rewrite it.
 
-**Clues** (exactly 6, from vague to giveaway):
-1. **Presentation:** age, sex, chief complaint. Must fit at least 4 organisms.
-2. **Background:** risk factors that widen the list, like immune status, comorbidities, job, or a generic exposure. Include one **fair red herring**: a real detail that points toward a different organism, such as a cat at home in a case that isn't Bartonella, a sick contact with a different illness, a recent trip that doesn't matter, or a new medication that could cause similar symptoms. A red herring must never contradict the real answer.
-3. **Exam:** narrows it to a few organisms.
-4. **Labs**, or a more specific test that rules out the red herring.
-5. **The signature exposure or classic finding** goes here or later, never earlier: things like "drank from a mountain stream," "ate raw oysters," "tick bite," "deli meat," or "pigeon droppings."
-6. **Microbiology:** stain, culture, or the classic lab finding. Basically gives it away.
+**Clues** (exactly 6). Each clue is **one short sentence with one new fact**. Every clue points toward the answer, and each one is more specific than the last. **No red herrings.**
+1. **Presentation:** age, sex, and the main complaint, like "A 61-year-old man presents with abdominal pain and diarrhea." Fits many organisms.
+2. **Symptoms:** one or two more symptoms. Still fits several organisms.
+3. **History:** the key risk factor or exposure, like immune status, a drug, travel, an animal, or a food.
+4. **Exam:** the classic physical finding.
+5. **Labs or imaging:** the classic test result.
+6. **Microbiology:** the diagnostic stain, culture, or test. Basically gives it away.
 
-Look at cases 3 onward in `data/cases.js` for examples of this pacing.
+Labels can change to fit (for example "Diet" or "CSF" instead of "Labs"), but keep the order: symptoms, then risk factor, then findings, then the diagnostic test. Look at cases 2 onward in `data/cases.js` for examples.
 
 Never name the organism, its disease, or a nickname in the clues. The checker catches the obvious ones, but also avoid indirect giveaways like naming the vaccine for that exact organism.
 
