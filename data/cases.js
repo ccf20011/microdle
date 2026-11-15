@@ -1225,4 +1225,79 @@ const CASES = [
     },
     pearl: 'Young infants with pertussis often do not whoop. They have apnea, turn blue, and have very high lymphocyte counts. Older siblings and adults with a lingering cough are the usual source.',
   },
+
+  // 34
+  {
+    accept: ['hbv'],
+    dx: 'Hepatitis B reactivation after rituximab',
+    clues: [
+      ['Presentation', 'A 63-year-old man presents with 1 week of fatigue and nausea.'],
+      ['Symptoms', 'He has lost his appetite, and his urine has turned dark.'],
+      ['History', 'He finished 6 cycles of chemotherapy for lymphoma 3 months ago.'],
+      ['Exam', 'T 37.4 °C. Yellow eyes and skin, and a tender liver edge. He is alert, with no confusion or tremor of the hands.'],
+      ['Labs', 'ALT 1,850, AST 1,420, bilirubin 6.1, INR 1.5. His chemotherapy included rituximab. He was born in Vietnam, and his mother died of liver cancer.'],
+      ['Microbiology', 'Viral surface antigen is now positive, with 90 million IU/mL of viral DNA. Before chemotherapy, his surface antigen was negative and his core antibody was positive.'],
+    ],
+    rx: {
+      prompt: 'He is admitted and hepatology is consulted. An HIV test is negative. What do you start?',
+      best: [[['entecavir', 'tenofovir']]],
+      okay: [],
+      notes: {
+        supportive: 'Reactivation after rituximab can progress to liver failure. It needs an antiviral now.',
+        art: 'He does not have HIV. He needs a single drug for this virus, entecavir or tenofovir.',
+        acyclovir: 'Herpes simplex hepatitis is a fair worry after chemotherapy, but his tests point to a different virus.',
+        valacyclovir: 'Herpes simplex hepatitis is a fair worry after chemotherapy, but his tests point to a different virus.',
+        ganciclovir: 'CMV is not the cause here.',
+        valganciclovir: 'CMV is not the cause here.',
+        prednisone: 'Steroids boost replication of this virus and can make the flare worse.',
+        methylprednisolone: 'Steroids boost replication of this virus and can make the flare worse.',
+      },
+      outcome: {
+        best: 'His viral load fell within weeks and his liver tests slowly returned to normal. He stayed on the antiviral for years.',
+        okay: 'He recovered.',
+        poor: 'His INR climbed and he became confused, and he was listed for a liver transplant.',
+      },
+      standard: 'Entecavir or tenofovir right away, continued for at least 12 months after anti-CD20 therapy ends. Watch for liver failure and refer for transplant evaluation if it develops.',
+    },
+    pearl: 'Before rituximab, test for surface antigen and core antibody. People who are core antibody positive, even with a negative surface antigen, should get preventive entecavir or tenofovir, because the virus hides in liver cells and can reactivate.',
+  },
+
+  // 35
+  {
+    accept: ['rrickettsii'],
+    dx: 'Rocky Mountain spotted fever spread by brown dog ticks',
+    clues: [
+      ['Presentation', 'A 7-year-old boy is brought in with 4 days of fever.'],
+      ['Symptoms', 'He has a bad headache, muscle aches, and has vomited several times.'],
+      ['History', 'He lives in a small town in eastern Arizona and has not traveled. Urgent care sent him home 2 days ago with a diagnosis of a viral illness.'],
+      ['Exam', 'T 39.6 °C, HR 138. Small red spots, some no longer blanching, on his wrists, ankles, palms, and soles, spreading onto his trunk. His eyes are red and his hands are puffy.'],
+      ['Labs', 'Na 129, platelets 62,000, AST 140. His family\'s dogs roam freely, and last week he pulled a tick off one of them.'],
+      ['Microbiology', 'Immunostaining of a skin biopsy shows tiny bacteria living inside the cells that line his small blood vessels.'],
+    ],
+    rx: {
+      prompt: 'He is admitted to the pediatric ward. He has no drug allergies. What do you start?',
+      best: [['doxycycline']],
+      okay: [],
+      extras: ['ceftriaxone', 'vanc-iv'],
+      harm: {
+        'tmp-smx': 'Sulfa drugs are linked to more severe disease and death in this infection.',
+      },
+      notes: {
+        chloramphenicol: 'Chloramphenicol is the only backup, and people treated with it die more often than those given doxycycline.',
+        ceftriaxone: 'Ceftriaxone is reasonable until meningococcus is ruled out, but it does nothing for this tick-borne infection.',
+        'vanc-iv': 'Vancomycin does nothing for this tick-borne infection.',
+        amoxicillin: 'Beta-lactams do not work against bacteria that live inside cells.',
+        azithromycin: 'Azithromycin is not reliable for this infection.',
+        ciprofloxacin: 'Fluoroquinolones are not recommended for this infection.',
+        supportive: 'Untreated, this infection kills 1 in 5 people or more. Doxycycline should start on suspicion, without waiting for tests.',
+      },
+      outcome: {
+        best: 'His fever broke within 2 days of doxycycline and the rash faded. He finished 7 days with no lasting damage and no tooth staining.',
+        okay: 'He recovered.',
+        poor: 'He developed seizures, kidney failure, and gangrene of his fingertips in the ICU.',
+      },
+      standard: 'Doxycycline at any age (2.2 mg/kg twice daily under 45 kg), started on suspicion and continued until at least 3 days after the fever is gone, usually 5 to 7 days.',
+    },
+    pearl: 'On tribal lands in Arizona, brown dog ticks living on free-roaming dogs spread Rocky Mountain spotted fever, and children are hit hardest. Short courses of doxycycline do not stain teeth, so it is first-line even in young children.',
+  },
 ];

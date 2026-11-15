@@ -108,6 +108,8 @@ const DRUGS = [
   { id: 'peramivir', name: 'Peramivir', aka: [], am: true },
   { id: 'baloxavir', name: 'Baloxavir', aka: ['Xofluza'], am: true },
   { id: 'amantadine', name: 'Amantadine', aka: [], am: true },
+  { id: 'entecavir', name: 'Entecavir', aka: ['Baraclude', 'ETV'], am: true },
+  { id: 'tenofovir', name: 'Tenofovir (TDF or TAF)', aka: ['Tenofovir', 'TDF', 'TAF', 'Viread', 'Vemlidy', 'Tenofovir disoproxil', 'Tenofovir alafenamide'], am: true },
   { id: 'art', name: 'Start antiretroviral therapy now', aka: ['ART', 'HAART', 'Antiretrovirals', 'HIV meds'], am: false },
 
   // Not antimicrobials
