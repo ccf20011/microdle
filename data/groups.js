@@ -373,4 +373,26 @@ const GROUPS = [
     { label: 'Media named after people', items: ['Thayer-Martin', 'Bordet-Gengou', 'Löwenstein-Jensen', 'Loeffler'],
       why: 'For Neisseria, Bordetella, mycobacteria, and C. diphtheriae.' },
   ],
+  // 34
+  [
+    { label: 'NRTIs', items: ['Zidovudine', 'Abacavir', 'Lamivudine', 'Emtricitabine'],
+      why: 'Test for HLA-B*57:01 before abacavir to avoid a hypersensitivity reaction, and watch for anemia from bone marrow suppression with zidovudine.' },
+    { label: 'Obligate intracellular bacteria', items: ['Rickettsia', 'Chlamydia', 'Ehrlichia', 'Anaplasma'],
+      why: 'They grow only inside host cells, so routine cultures stay negative, and doxycycline treats all four.' },
+    { label: 'Drugs that can harm the eyes', items: ['Ethambutol', 'Rifabutin', 'Voriconazole', 'Hydroxychloroquine'],
+      why: 'Ethambutol causes optic neuritis with red-green color loss, rifabutin uveitis, voriconazole brief visual changes, and hydroxychloroquine bull\'s-eye retinopathy.' },
+    { label: 'Toxins that stop protein synthesis', items: ['Diphtheria toxin', 'Exotoxin A', 'Shiga toxin', 'Ricin'],
+      why: 'Diphtheria toxin and Pseudomonas exotoxin A ADP-ribosylate EF-2, while Shiga toxin and ricin remove an adenine from the 28S rRNA of the 60S subunit.' },
+  ],
+  // 35
+  [
+    { label: 'Need airborne precautions', items: ['Measles', 'Chickenpox', 'Tuberculosis', 'Smallpox'],
+      why: 'Tiny droplet nuclei hang in the air, so patients need a negative-pressure room and staff need an N95 respirator, not just a surgical mask.' },
+    { label: 'Branching filamentous bacteria', items: ['Nocardia', 'Actinomyces', 'Streptomyces', 'Actinomadura'],
+      why: 'SNAP: Sulfonamides for Nocardia (aerobic, weakly acid-fast), Actinomyces gets Penicillin (anaerobic, not acid-fast).' },
+    { label: 'Bipolar "safety pin" staining', items: ['Y. pestis', 'B. pseudomallei', 'K. granulomatis', 'P. multocida'],
+      why: 'The ends stain darker than the middle: plague, melioidosis, the Donovan bodies of granuloma inguinale, and animal-bite infections.' },
+    { label: 'Species named for an animal', items: ['C. psittaci', 'M. avium', 'B. suis', 'T. canis'],
+      why: 'Psittaci means parrot, avium birds, suis pig, and canis dog, the animals each was first found in, though people catch M. avium from water and soil, not birds.' },
+  ],
 ];
