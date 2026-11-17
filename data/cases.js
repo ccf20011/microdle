@@ -1300,4 +1300,74 @@ const CASES = [
     },
     pearl: 'On tribal lands in Arizona, brown dog ticks living on free-roaming dogs spread Rocky Mountain spotted fever, and children are hit hardest. Short courses of doxycycline do not stain teeth, so it is first-line even in young children.',
   },
+
+  // 36
+  {
+    accept: ['ehec'],
+    dx: 'Shiga toxin-producing E. coli colitis after a petting zoo',
+    clues: [
+      ['Presentation', 'A 6-year-old girl is brought in with 3 days of belly pain and diarrhea.'],
+      ['Symptoms', 'Since yesterday the diarrhea has turned bloody, and she doubles over with cramps before each stool.'],
+      ['History', 'She was healthy before, and her family has not traveled.'],
+      ['Exam', 'T 37.3 °C. Mildly dry mouth. Her lower abdomen is tender, with no guarding.'],
+      ['Labs', 'WBC 13,500, hemoglobin 12.4, platelets 230,000, creatinine 0.4. Five days ago she fed goats and calves at a petting zoo at the county fair.'],
+      ['Microbiology', 'Stool tests positive for Shiga toxin. The stool grows a Gram-negative rod that ferments lactose on MacConkey agar but does not ferment sorbitol on sorbitol-MacConkey agar.'],
+    ],
+    rx: {
+      prompt: 'She is drinking, but slowly. What do you recommend?',
+      best: [['supportive']],
+      okay: [],
+      noAntimicrobials: 'Antibiotics may make the bacteria release more toxin and raise her risk of kidney failure. They are avoided in this infection.',
+      harm: {
+        loperamide: 'Drugs that slow the gut raise the risk of kidney failure and toxic colon in this infection.',
+      },
+      notes: {},
+      outcome: {
+        best: 'She got IV fluids overnight and daily blood counts for a week. Her diarrhea cleared, and her kidneys and platelets stayed normal.',
+        okay: 'She recovered.',
+        poor: 'Four days later her urine output dropped and her platelets fell to 40,000, with broken red cells on the smear. She needed dialysis for 2 weeks.',
+      },
+      standard: 'Supportive care with fluids (early IV fluids may protect the kidneys). No antibiotics, antimotility drugs, or NSAIDs. Check blood counts and creatinine for about a week to catch hemolytic uremic syndrome.',
+    },
+    pearl: 'Up to 15% of young children with E. coli O157 develop hemolytic uremic syndrome, usually about a week after the diarrhea starts. Bloody diarrhea with little or no fever is a clue, and petting zoos, undercooked ground beef, raw flour, and leafy greens are common sources.',
+  },
+
+  // 37
+  {
+    accept: ['crypto'],
+    dx: 'Cryptococcal meningitis after kidney transplant',
+    clues: [
+      ['Presentation', 'A 54-year-old man presents with 3 weeks of headache.'],
+      ['Symptoms', 'The headache is worse in the morning, and he has had nausea and trouble concentrating at work.'],
+      ['History', 'He had a kidney transplant 18 months ago and takes tacrolimus, mycophenolate, and prednisone.'],
+      ['Exam', 'T 37.8 °C. Mild neck stiffness. Both optic discs are swollen. No weakness or numbness.'],
+      ['CSF', 'Opening pressure 36 cm of water, 40 white cells (mostly lymphocytes), glucose 30 (serum 110), protein 85. MRI of the brain shows no mass.'],
+      ['Microbiology', 'CSF culture grows a budding yeast with a thick capsule, and a CSF capsular antigen test is strongly positive.'],
+    ],
+    rx: {
+      prompt: 'He is admitted, and the team will do repeat lumbar punctures to bring down his pressure. His kidney function is stable. What antifungal treatment do you start?',
+      best: [['ampho', 'flucytosine']],
+      okay: [['ampho']],
+      notes: {
+        ampho: 'Amphotericin alone is an accepted backup, but adding flucytosine clears the CSF faster. Amphotericin plus flucytosine is first-line.',
+        fluconazole: 'Fluconazole comes after 2 weeks of induction, as consolidation. It is too weak to start treating meningitis on its own.',
+        flucytosine: 'Flucytosine alone quickly breeds resistance. It is only a partner for amphotericin.',
+        voriconazole: 'Voriconazole is not a standard treatment for this meningitis.',
+        micafungin: 'Echinocandins have no activity against this yeast.',
+        caspofungin: 'Echinocandins have no activity against this yeast.',
+        anidulafungin: 'Echinocandins have no activity against this yeast.',
+        dexamethasone: 'Steroids do not help this fungal meningitis, and in people with HIV they made outcomes worse.',
+        ceftriaxone: 'The culture shows a yeast, not bacteria.',
+        'vanc-iv': 'The culture shows a yeast, not bacteria.',
+        ampicillin: 'The culture shows a yeast, not bacteria.',
+      },
+      outcome: {
+        best: 'Daily lumbar punctures relieved his headache, and his CSF was sterile at 2 weeks. He switched to fluconazole, and his immune-suppressing drugs were slowly lowered.',
+        okay: 'He recovered, but adding flucytosine would have cleared the infection faster.',
+        poor: 'His CSF stayed positive, and he lost vision in one eye from the high pressure.',
+      },
+      standard: 'Liposomal amphotericin B plus flucytosine for at least 2 weeks, then fluconazole 400 to 800 mg daily for 8 weeks, then 200 to 400 mg daily for 6 to 12 months. Repeat lumbar punctures for high opening pressure, and lower immune suppression gradually.',
+    },
+    pearl: 'In transplant recipients, this meningitis creeps in over weeks with headache and little fever. High CSF pressure causes much of the blindness and death, so it is drained with repeat lumbar punctures, not acetazolamide or steroids.',
+  },
 ];
